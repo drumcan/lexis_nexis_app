@@ -1,5 +1,4 @@
 require 'rubygems'
-require 'xml'
 require 'savon'
 require 'nokogiri'
 require 'sinatra'
