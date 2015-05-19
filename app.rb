@@ -4,7 +4,7 @@ require 'nokogiri'
 require 'sinatra'
 require 'pry'
 require 'nori'
-require "active_support/all"
+
 
 
 get "/lexis_nexis" do
@@ -54,10 +54,10 @@ r = client.call( :flex_id, message: {
   response_parser :nokogiri
 end
 
-r = r.to_s 
-parsed = Nori.new.parse(r)
-response = parsed["soap:Envelope"]["soap:Body"]["FlexIDResponseEx"]["response"]
-response["Result"].each do |key,value| "#{key} #{value}" end
+  r = r.to_s 
+  parsed = Nori.new.parse(r)
+  response = parsed["soap:Envelope"]["soap:Body"]["FlexIDResponseEx"]["response"]
+  response["Result"].each do |key,value| "#{key} #{value}" end
 end
 
 
