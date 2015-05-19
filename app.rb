@@ -2,6 +2,10 @@ require 'rubygems'
 require 'savon'
 require 'nokogiri'
 require 'sinatra'
+require 'pry'
+require 'nori'
+require "active_support/all"
+
 
 get "/lexis_nexis" do
   erb :lexis_nexis
@@ -9,7 +13,8 @@ end
 
 post "/upload" do
 
-client = Savon.client(basic_auth: ["PPBRDEVXML", "Test0005"], wsdl: "https://wsonline.seisint.com/WsIdentity?ver_=1.85&wsdl")
+client = Savon.client(basic_auth: ["PPBRDEVXML", "Test0005"], wsdl: "https://wsonline.seisint.com/WsIdentity?ver_=1.85&wsdl", raise_errors: false)
+
 r = client.call( :flex_id, message: {
      "Options" => {
        "WatchLists" => "OFAC",
@@ -44,24 +49,15 @@ r = client.call( :flex_id, message: {
     "HomePhone" => params[:phone]
    }
   
-  })
+  }) do 
+  advanced_typecasting true
+  response_parser :nokogiri
+end
 
-r = r.to_s
-xml = Nokogiri::XML(r)
-xml.remove_namespaces!
-transaction_id = xml.xpath('//TransactionId').text
-puts "Transaction id = #{transaction_id}"
-if ((xml.xpath('//VerifiedElementSummary/DOB').text ) == "1") 
-  puts "DOB MATCH => TRUE"
-else 
-  puts "DOB MATCH => FALSE"
-end
-if ((xml.xpath('//SSNDeceased').text) == "1") 
-  puts "SSN DECEASED = TRUE"
-else 
-  puts "SSN DECEASED = FALSE"
-end
-a = xml.xpath('//Description').each do |node|  puts "ERROR: #{node.text}" end 
+r = r.to_s 
+parsed = Nori.new.parse(r)
+response = parsed["soap:Envelope"]["soap:Body"]["FlexIDResponseEx"]["response"]
+response["Result"].each do |key,value| "#{key} #{value}" end
 end
 
 
