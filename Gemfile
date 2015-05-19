@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 gem 'sinatra'
-gem 'savon'
+gem 'savon', '1.4.6'
 gem 'nokogiri'
 
 group :development, :test do
