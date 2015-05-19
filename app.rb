@@ -9,7 +9,7 @@ end
 
 post "/upload" do
 
-client = Savon.client(basic_auth: ["PPBRXML", "Bp72jK3u"], wsdl: "https://wsonline.seisint.com/WsIdentity?ver_=1.85&wsdl")
+client = Savon.client(basic_auth: ["PPBRDEVXML", "Test0005"], wsdl: "https://wsonline.seisint.com/WsIdentity?ver_=1.85&wsdl")
 r = client.call( :flex_id, message: {
      "Options" => {
        "WatchLists" => "OFAC",
@@ -22,7 +22,6 @@ r = client.call( :flex_id, message: {
    "SearchBy" => {
      "Name" => {
       "First" => params[:first_name],
-      "Middle" => params[:middle_name],
       "Last" => params[:last_name]
       },
     "Address" => {
@@ -34,7 +33,7 @@ r = client.call( :flex_id, message: {
       "UnitNumber" => params[:unit_num],
       "City" => params[:city],
       "State" => params[:state],
-      "PostalCode" => params[:postal_code]
+      "Zip5" => params[:postal_code]
     },
     "DOB" => {
       "Year" => params[:year],
