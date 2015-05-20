@@ -4,6 +4,7 @@ gem 'savon'
 gem 'nokogiri'
 gem 'pry'
 gem 'nori'
+gem 'rest-client'
 
 group :development, :test do
   gem 'sqlite3', '1.3.7'
