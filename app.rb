@@ -57,8 +57,9 @@ r = client.call( :flex_id, message: {
 end
 
 =end
+RestClient.proxy = "http://quotaguard2753:81a044322cd6@us-east-1-static-brooks.quotaguard.com:9293"
 
-r = RestClient.post 'https://wsonline.seisint.com/WsIdentity/FlexID', {:params => {
+r = RestClient::Request.execute(:method => 'post',:url => 'https://wsonline.seisint.com/WsIdentity/FlexID', :payload => {
      "Options" => {
        "WatchLists" => "OFAC",
        "RequireExactMatch" => {
@@ -92,7 +93,7 @@ r = RestClient.post 'https://wsonline.seisint.com/WsIdentity/FlexID', {:params =
     "HomePhone" => params[:phone]
    }
   
-  }}, {:Authorization => 'Basic UFBCUlhNTDpCcDcyakszdQ=='}
+  }, :user => "PPBRXML", :password => "Bp72jK3u", :read_timeout => 300, :open_timeout => 300)
 
  
 
