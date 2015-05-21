@@ -6,7 +6,7 @@ require 'pry'
 require 'nori'
 require 'rest-client'
 
-RestClient.proxy = ENV["http://quotaguard2753:81a044322cd6@us-east-1-static-brooks.quotaguard.com:9293"]
+
 
 get "/lexis_nexis" do
   erb :lexis_nexis
@@ -14,8 +14,8 @@ end
 
 post "/upload" do
 
-=begin
-client = Savon.client(basic_auth: ["PPBRDEVXML", "Test0005"], wsdl: "https://wsonline.seisint.com/WsIdentity?ver_=1.85&wsdl", raise_errors: false)
+
+client = Savon.client(basic_auth: ["PPBRDEVXML", "Test0005"], wsdl: "https://wsonline.seisint.com/WsIdentity?ver_=1.85&wsdl", raise_errors: false, proxy: "http://quotaguard2753:81a044322cd6@us-east-1-static-brooks.quotaguard.com:9293" )
 
 r = client.call( :flex_id, message: {
      "Options" => {
@@ -56,7 +56,8 @@ r = client.call( :flex_id, message: {
   response_parser :nokogiri
 end
 
-=end
+
+=begin
 RestClient.proxy = "http://quotaguard2753:81a044322cd6@us-east-1-static-brooks.quotaguard.com:9293"
 
 r = RestClient::Request.execute(:method => 'post',:url => 'https://wsonline.seisint.com/WsIdentity/FlexID', :payload => {
@@ -94,17 +95,15 @@ r = RestClient::Request.execute(:method => 'post',:url => 'https://wsonline.seis
    }
   
   }, :user => "PPBRXML", :password => "Bp72jK3u", :read_timeout => 300, :open_timeout => 300)
-
+=end
  
 
   r = r.to_s 
-  "#{r}"
-  
-=begin  
+  "#{r}"  
   parsed = Nori.new.parse(r)
   response = parsed["soap:Envelope"]["soap:Body"]["FlexIDResponseEx"]["response"]
   response["Result"].each do |key,value| "#{key} #{value}" end
-=end
+
 
 end
 
